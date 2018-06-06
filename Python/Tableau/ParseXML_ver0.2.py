@@ -29,16 +29,11 @@ def func_datasource(datasource):
             print("metadata definition --------------")
             key = 1
             datasource = {}
-            columns = []
-            for connection in elem.getiterator("connection"):
-                for metadatarecords in connection.getiterator("relation"):
-                    for metadatarecord in metadatarecords.getiterator("columns"):
-                        for metadata in metadatarecord:
-                            columns[key] = {}
-                            columns[key]["name"] = metadata.get("name")
-                            columns[key]["datatype"] = metadata.get("datatype")
-                            key = key + 1
-                    print(columns)
+            metadatarecord = elem.findall('connection/relation/columns/')
+            for mdt in metadatarecord:
+                print(mdt.attrib)
+                print(mdt.get("name"))
+
             
             # Caliculation Field
             print("caliculation --------------")
