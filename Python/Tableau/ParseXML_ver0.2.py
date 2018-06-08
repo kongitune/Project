@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import xml.etree.ElementTree as ET
 
 def func_datasource(datasource):
@@ -23,8 +21,8 @@ def func_datasource(datasource):
         else:
             
             # Datasource Definition
-            print("---- metadata definition ----")
-            metadatarecords = elem.findall('connection/metadata-records/')
+            print("---- metadata ----")
+            metadatarecords = elem.findall("connection/metadata-records/")
             columns = []
             for metadatarecord in metadatarecords:
                 if metadatarecord.get("class") == "column":
@@ -101,17 +99,10 @@ def func_dashboard(dashboard):
     # dashbord name
     print(dashboard.get("name"))
     
-    # worksheet name used in the dashboard
-    nestZone = 'zones/zone/'
-    zone = dashboard.findall(nestZone)
-    #for zoneChild in zone:
-    #    if zoneChild.tag == 'name' None:
-    #        break
-    #    elif zoneChild.tag in None and zoneChild.get('Name') is None:
-    #        print(zoneChild.get('Name'))
-        
-    nestZone = nestZone + 'zone/'
-    print(nestZone)
+    # worksheet names used in the dashboard
+    zone = dashboard.findall('.zones//zone[@name]')    
+    for zoneChild in zone:
+        print(zoneChild.get('name'))
 
 def func_datasources(datasources):
     for datasource in datasources:
@@ -126,7 +117,7 @@ def func_dashboards(dashboards):
         func_dashboard(dashboard)
 
 # Main process
-fp = open("Superstore2.twb","r",encoding="utf-8")
+fp = open("Superstore.twb","r",encoding="utf-8")
 content = fp.read()
 
 # root tag attribute
@@ -134,10 +125,10 @@ root = ET.fromstring(content)
 print(root.tag, root.attrib)
 
 # Child Layer tag attribute
-for child in root:
-    if child.tag == "datasources":
-        func_datasource(child)
-    elif child.tag == "worksheets":
-        func_worksheets(child)
-    elif child.tag == "dashboards":
-        func_dashboards(child)
+for rootChild in root:
+    if rootChild.tag == "datasources":
+        func_datasource(rootChild)
+    elif rootChild.tag == "worksheets":
+        func_worksheets(rootChild)
+    elif rootChild.tag == "dashboards":
+        func_dashboards(rootChild)
