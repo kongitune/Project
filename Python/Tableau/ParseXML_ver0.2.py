@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 
+page_text = ''
+
 def func_datasource(datasource):
     for elem in datasource:
         if elem.get("name") == "Parameters":
@@ -100,6 +102,7 @@ def func_dashboard(dashboard):
     print(dashboard.get("name"))
     
     # worksheet names used in the dashboard
+    
     zone = dashboard.findall('.zones//zone[@name]')    
     for zoneChild in zone:
         print(zoneChild.get('name'))
